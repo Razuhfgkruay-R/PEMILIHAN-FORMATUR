@@ -1399,7 +1399,7 @@
         </button>
       </div>
       <div class="neu-inset" style="padding:16px; font-size:13px; color:var(--text-muted); line-height:1.65; display:flex; flex-direction:column; gap:8px;">
-        <p><strong style="color:var(--text-main);">Pemilihan Formatur IPM 2027-2028</strong> merupakan sistem pemungutan suara elektronik berbasis daftar pilihan formatur yang terintegrasi langsung dengan database sekolah.</p>
+        <p><strong style="color:var(--text-main);">Pemilihan Formatur IPM 2027-2028</strong> merupakan sistem pemungutan suara elektronik berbasis daftar pilihan formatur yang terintegrasi langsung dengan database PR IPM SMA MUhammadiyah 2 Depok.</p>
         <p><strong style="color:var(--text-main);">Alur Pemilihan:</strong><br>
         1. Pemilih mengetik dan mengonfirmasi nama lengkap sesuai kelas.<br>
         2. Memilih kandidat formatur tepat sesuai kuota yang ditentukan.<br>
@@ -1424,15 +1424,28 @@
   </div>
 
   <script>
-    /* ================= DETEKSI & KUNCI PERANGKAT HP / ANDROID ================= */
+/* ================= DETEKSI & KUNCI PERANGKAT HP / ANDROID ================= */
     (function enforceDesktopOnly() {
       function isMobileOrAndroid() {
         const ua = navigator.userAgent || navigator.vendor || window.opera || '';
+        const platform = navigator.platform || '';
+        const chPlatform = (navigator.userAgentData && navigator.userAgentData.platform) || '';
+
+        // Pastikan sistem operasi asli desktop (Windows / macOS) selalu diizinkan meski touchscreen
+        const isDesktopOS = /Win32|Win64|Windows|MacIntel|Macintosh/i.test(platform) ||
+                            /Windows|macOS/i.test(chPlatform);
+        if (isDesktopOS) return false;
+
+        // Deteksi UA & Client Hints Android / iOS
         const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
-        const isClientHintMobile = navigator.userAgentData && navigator.userAgentData.mobile === true;
-        // Menangkap browser Android yang mengaktifkan mode "Situs Desktop"
-        const isTouchSmallScreen = (navigator.maxTouchPoints > 1) && (Math.min(window.screen.width, window.screen.height) < 900);
-        return isMobileUA || isClientHintMobile || isTouchSmallScreen;
+        const isClientHintMobile = (navigator.userAgentData && navigator.userAgentData.mobile === true) ||
+                                   /Android|iOS/i.test(chPlatform);
+
+        // Deteksi HP Android/iOS yang memaksa mode "Situs Desktop" (layar sentuh tanpa mouse/trackpad presisi)
+        const hasNoFinePointer = !window.matchMedia('(pointer: fine)').matches;
+        const isTouchMobile = (navigator.maxTouchPoints > 1) && hasNoFinePointer;
+
+        return isMobileUA || isClientHintMobile || isTouchMobile;
       }
 
       function checkDeviceLock() {
@@ -1441,6 +1454,9 @@
         if (isMobileOrAndroid()) {
           lockOverlay.classList.add('active');
           if (appWrap) appWrap.style.display = 'none';
+        } else {
+          lockOverlay.classList.remove('active');
+          if (appWrap) appWrap.style.display = 'flex';
         }
       }
 
