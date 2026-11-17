@@ -68,25 +68,25 @@
       body { display: none !important; }
     }
 
-    /* ================= LIGHT NEUMORPHISM UTILITIES ================= */
+    /* ================= LIGHT NEUMORPHISM UTILITIES (GPU OPTIMIZED) ================= */
     .neu-card {
       background: var(--bg-base);
       border-radius: var(--radius-xl);
-      box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+      box-shadow: 7px 7px 14px var(--shadow-dark), -7px -7px 14px var(--shadow-light);
       border: 1px solid rgba(255, 255, 255, 0.65);
     }
 
     .neu-card-sm {
       background: var(--bg-base);
       border-radius: var(--radius-lg);
-      box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+      box-shadow: 4px 4px 9px var(--shadow-dark), -4px -4px 9px var(--shadow-light);
       border: 1px solid rgba(255, 255, 255, 0.6);
     }
 
     .neu-inset {
       background: var(--bg-base);
       border-radius: var(--radius-md);
-      box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+      box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
       border: 1px solid rgba(255, 255, 255, 0.45);
     }
 
@@ -95,24 +95,24 @@
       color: var(--text-main);
       border: 1px solid rgba(255, 255, 255, 0.7);
       border-radius: var(--radius-lg);
-      box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light);
+      box-shadow: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
       cursor: pointer;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 9px;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: transform 0.16s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.16s ease;
+      transform: translateZ(0);
       user-select: none;
     }
 
     .neu-btn:hover:not(:disabled) {
-      transform: translateY(-2px);
-      box-shadow: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+      transform: translateY(-2px) translateZ(0);
     }
 
     .neu-btn:active:not(:disabled), .neu-btn.active {
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
       box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light);
     }
 
@@ -293,10 +293,21 @@
       width: 100%;
       flex: 1;
       min-height: 0;
-      animation: fadeIn 0.25s ease;
+      animation: fadeIn 0.2s ease;
     }
 
     .view-section.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Fullscreen Mode khusus View Chart */
+    #view-chart:fullscreen,
+    #view-chart:-webkit-full-screen {
+      background-color: var(--bg-base);
+      width: 100vw;
+      height: 100vh;
+      padding: 22px 32px;
       display: flex;
       flex-direction: column;
     }
@@ -460,7 +471,7 @@
       font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
-      transition: all 0.15s;
+      transition: background-color 0.15s, color 0.15s;
     }
 
     .dropdown-item:hover, .dropdown-item.selected {
@@ -474,6 +485,8 @@
       min-height: 0;
       overflow-y: auto;
       padding: 6px;
+      scroll-behavior: smooth;
+      transform: translateZ(0);
     }
 
     .student-grid {
@@ -502,11 +515,12 @@
       justify-content: space-between;
       gap: 12px;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: transform 0.16s ease, border-color 0.16s ease;
+      transform: translateZ(0);
     }
 
     .student-card:hover:not(.voted) {
-      transform: translateY(-2px);
+      transform: translateY(-2px) translateZ(0);
       border-color: rgba(37, 99, 235, 0.35);
     }
 
@@ -559,7 +573,7 @@
       box-shadow: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
     }
 
-    /* ================= FORMATUR PACKAGE VOTING VIEW (MAX 4 COLUMNS) ================= */
+    /* ================= FORMATUR PACKAGE VOTING VIEW (GPU SMOOTH SCROLL) ================= */
     .voting-topbar {
       padding: 12px 22px;
       display: flex;
@@ -617,7 +631,11 @@
       flex: 1;
       min-height: 0;
       overflow-y: auto;
-      padding: 8px 8px 12px 8px;
+      padding: 8px 10px 14px 10px;
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
+      -webkit-overflow-scrolling: touch;
+      transform: translateZ(0);
     }
 
     .formatur-grid {
@@ -641,16 +659,19 @@
       gap: 10px;
       cursor: pointer;
       position: relative;
-      transition: all 0.18s ease;
+      transition: transform 0.16s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.16s ease, border-color 0.16s ease;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+      contain: layout style;
     }
 
     .formatur-card:hover:not(.locked) {
-      transform: translateY(-2px);
+      transform: translateY(-2px) translateZ(0);
     }
 
     .formatur-card.selected {
-      box-shadow: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
-      border: 2px solid rgba(5, 150, 105, 0.55);
+      box-shadow: inset 4px 4px 9px var(--shadow-dark), inset -4px -4px 9px var(--shadow-light);
+      border: 2px solid rgba(5, 150, 105, 0.6);
     }
 
     .formatur-card.locked {
@@ -684,7 +705,7 @@
       align-items: center;
       justify-content: center;
       color: var(--text-dim);
-      transition: all 0.18s;
+      transition: color 0.15s ease;
     }
 
     .formatur-card.selected .formatur-check {
@@ -730,7 +751,7 @@
       flex-shrink: 0;
     }
 
-    /* ================= REALTIME CANDLESTICK CHART (RANKED) ================= */
+    /* ================= REALTIME CANDLESTICK CHART (RANKED & GPU SMOOTH) ================= */
     .chart-topbar {
       display: flex;
       align-items: center;
@@ -811,6 +832,9 @@
       display: flex;
       align-items: flex-end;
       gap: 18px;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
+      transform: translateZ(0);
     }
 
     .candle-col {
@@ -822,6 +846,8 @@
       min-width: 96px;
       max-width: 112px;
       flex: 1;
+      transform: translateZ(0);
+      contain: layout style;
     }
 
     .candle-rank-pill {
@@ -849,7 +875,7 @@
     .candle-well {
       width: 38px;
       flex: 1;
-      max-height: 145px;
+      max-height: 180px;
       min-height: 60px;
       border-radius: 12px;
       padding: 4px;
@@ -857,6 +883,10 @@
       align-items: flex-end;
       justify-content: center;
       position: relative;
+    }
+
+    #view-chart:fullscreen .candle-well {
+      max-height: 290px;
     }
 
     .candle-wick {
@@ -873,15 +903,16 @@
       min-height: 6px;
       border-radius: 9px;
       background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
-      box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
-      transition: height 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.28);
+      transition: height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: height;
       position: relative;
       z-index: 2;
     }
 
     .candle-col.elected .candle-body {
       background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%);
-      box-shadow: 0 3px 14px rgba(217, 119, 6, 0.4);
+      box-shadow: 0 3px 10px rgba(217, 119, 6, 0.35);
     }
 
     .candle-candidate {
@@ -1030,7 +1061,7 @@
 
     ::-webkit-scrollbar {
       width: 6px;
-      height: 6px;
+      height: 7px;
     }
     ::-webkit-scrollbar-track {
       background: var(--bg-base);
@@ -1084,7 +1115,6 @@
     <header class="neu-card header-card">
       <div class="header-title-group">
         <div class="header-badge">
-          <!-- IKON KOTAK SUARA / BALLOT BOX -->
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 11l3 3L22 4"/>
             <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
@@ -1095,7 +1125,6 @@
       </div>
 
       <div class="header-logos">
-        <!-- LOGO SMA: File gambar lokal -->
         <div class="neu-inset logo-slot" title="Logo Sekolah">
           <img id="logo-sma" src="logo-sekolah.png" alt="Logo SMA" draggable="false" onload="this.style.display='block'; this.nextElementSibling.style.display='none';" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <div class="logo-fallback" style="display:flex;">
@@ -1104,7 +1133,6 @@
           </div>
         </div>
 
-        <!-- LOGO IPM: File gambar lokal -->
         <div class="neu-inset logo-slot" title="Logo IPM">
           <img id="logo-ipm" src="logo-ipm.png" alt="Logo IPM" draggable="false" onload="this.style.display='block'; this.nextElementSibling.style.display='none';" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
           <div class="logo-fallback" style="display:flex;">
@@ -1236,7 +1264,7 @@
       </div>
     </section>
 
-    <!-- ================= VIEW 4: GRAFIK REALTIME (GRAFIK LILIN PERINGKAT) ================= -->
+    <!-- ================= VIEW 4: GRAFIK REALTIME (GRAFIK LILIN PERINGKAT + FULLSCREEN) ================= -->
     <section id="view-chart" class="view-section">
       <div class="chart-topbar">
         <div>
@@ -1252,6 +1280,10 @@
           <button class="neu-btn" style="padding:10px 16px; font-size:12px;" onclick="fetchRealtimeResults()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
             <span>Perbarui</span>
+          </button>
+          <button id="btn-fullscreen-chart" class="neu-btn neu-btn-primary" style="padding:10px 16px; font-size:12px;" onclick="toggleChartFullscreen()">
+            <svg id="fullscreen-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+            <span id="fullscreen-label">Layar Penuh</span>
           </button>
           <button class="neu-btn" style="padding:10px 16px; font-size:12px;" onclick="exitChartView()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
@@ -1329,7 +1361,7 @@
 
   <!-- ================= CUSTOM MODALS ================= -->
 
-  <!-- Modal 1: Kode Akses (Anti Pop-up Simpan Sandi Browser) -->
+  <!-- Modal 1: Kode Akses -->
   <div id="modal-auth" class="modal-backdrop">
     <div class="neu-card modal-box">
       <div class="modal-header">
@@ -1399,7 +1431,7 @@
         </button>
       </div>
       <div class="neu-inset" style="padding:16px; font-size:13px; color:var(--text-muted); line-height:1.65; display:flex; flex-direction:column; gap:8px;">
-        <p><strong style="color:var(--text-main);">Pemilihan Formatur IPM 2027-2028</strong> merupakan sistem pemungutan suara elektronik berbasis daftar pilihan formatur yang terintegrasi langsung dengan database PR IPM SMA MUhammadiyah 2 Depok.</p>
+        <p><strong style="color:var(--text-main);">Pemilihan Formatur IPM 2027-2028</strong> merupakan sistem pemungutan suara elektronik berbasis daftar pilihan formatur yang terintegrasi langsung dengan database PR IPM SMA Muhammadiyah 2 Depok.</p>
         <p><strong style="color:var(--text-main);">Alur Pemilihan:</strong><br>
         1. Pemilih mengetik dan mengonfirmasi nama lengkap sesuai kelas.<br>
         2. Memilih kandidat formatur tepat sesuai kuota yang ditentukan.<br>
@@ -1411,7 +1443,7 @@
     </div>
   </div>
 
-  <!-- Modal 5: Notifikasi / Loading (Spinner Berputar) / Sukses Custom -->
+  <!-- Modal 5: Notifikasi / Loading / Sukses Custom -->
   <div id="modal-status" class="modal-backdrop">
     <div class="neu-card modal-box" style="text-align:center; align-items:center;">
       <div id="status-icon-box" class="neu-inset" style="width:64px; height:64px; border-radius:18px; display:flex; align-items:center; justify-content:center; color:var(--accent-emerald);"></div>
@@ -1424,24 +1456,21 @@
   </div>
 
   <script>
-/* ================= DETEKSI & KUNCI PERANGKAT HP / ANDROID ================= */
+    /* ================= DETEKSI & KUNCI PERANGKAT HP / ANDROID ================= */
     (function enforceDesktopOnly() {
       function isMobileOrAndroid() {
         const ua = navigator.userAgent || navigator.vendor || window.opera || '';
         const platform = navigator.platform || '';
         const chPlatform = (navigator.userAgentData && navigator.userAgentData.platform) || '';
 
-        // Pastikan sistem operasi asli desktop (Windows / macOS) selalu diizinkan meski touchscreen
         const isDesktopOS = /Win32|Win64|Windows|MacIntel|Macintosh/i.test(platform) ||
                             /Windows|macOS/i.test(chPlatform);
         if (isDesktopOS) return false;
 
-        // Deteksi UA & Client Hints Android / iOS
         const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini|mobile|tablet/i.test(ua);
         const isClientHintMobile = (navigator.userAgentData && navigator.userAgentData.mobile === true) ||
                                    /Android|iOS/i.test(chPlatform);
 
-        // Deteksi HP Android/iOS yang memaksa mode "Situs Desktop" (layar sentuh tanpa mouse/trackpad presisi)
         const hasNoFinePointer = !window.matchMedia('(pointer: fine)').matches;
         const isTouchMobile = (navigator.maxTouchPoints > 1) && hasNoFinePointer;
 
@@ -1489,32 +1518,27 @@
         const key = (e.key || '').toLowerCase();
         const ctrlOrCmd = e.ctrlKey || e.metaKey;
 
-        // Blokir F12
         if (e.key === 'F12' || e.keyCode === 123) {
           e.preventDefault();
           return false;
         }
 
-        // Blokir Ctrl+Shift+I / J / C / K (Inspect Element / Console)
         if (ctrlOrCmd && e.shiftKey && ['i', 'j', 'c', 'k'].includes(key)) {
           e.preventDefault();
           return false;
         }
 
-        // Blokir Ctrl+U (View Source), Ctrl+S (Save Page), Ctrl+P (Print)
         if (ctrlOrCmd && ['u', 's', 'p'].includes(key)) {
           e.preventDefault();
           return false;
         }
 
-        // Blokir Ctrl+A di luar kolom input
         if (ctrlOrCmd && key === 'a' && !e.target.matches('input, textarea')) {
           e.preventDefault();
           return false;
         }
       }, true);
 
-      // Deteksi pembukaan DevTools berdasarkan selisih dimensi viewport
       const shield = document.getElementById('security-shield');
       const appWrap = document.getElementById('main-app-wrapper');
       setInterval(function () {
@@ -1669,7 +1693,7 @@
         });
     }
 
-    /* ================= VOTER SEARCH & SELECTION (DEFAULT EMPTY) ================= */
+    /* ================= VOTER SEARCH & SELECTION ================= */
     function loadInitialVotingData(isRefresh) {
       showStatusModal('loading', isRefresh ? 'Memperbarui Data...' : 'Memuat Data Pemilih...', 'Menyiapkan database pemilih, kandidat, dan kuota.');
       apiGet('getInitialData')
@@ -1773,7 +1797,7 @@
       openModal('modal-confirm-voter');
     }
 
-    /* ================= PACKAGE FORMATUR VOTING (SHUFFLED PER VOTER) ================= */
+    /* ================= PACKAGE FORMATUR VOTING (DOM-CACHED ANTI-LAG) ================= */
     function startVotingSession() {
       closeModal('modal-confirm-voter');
       selectedCandidates = [];
@@ -1783,8 +1807,10 @@
       document.getElementById('board-instruction-text').textContent =
         `Pilih ${electionData.quota} calon formatur. Klik kartu calon untuk menandai pilihanmu. Jika ingin mengubah pilihan, klik kembali kartu calon yang sudah dipilih.`;
 
-      renderFormaturBoard();
+      buildFormaturBoard();
+      updateFormaturSelectionUI();
       switchView('view-voting');
+      document.querySelector('.formatur-grid-scroll').scrollTop = 0;
     }
 
     function cancelVoting() {
@@ -1798,7 +1824,7 @@
 
     function resetCurrentChoices() {
       selectedCandidates = [];
-      renderFormaturBoard();
+      updateFormaturSelectionUI();
     }
 
     function toggleCandidateSelection(candidateName) {
@@ -1809,10 +1835,42 @@
         if (selectedCandidates.length >= electionData.quota) return;
         selectedCandidates.push(candidateName);
       }
-      renderFormaturBoard();
+      updateFormaturSelectionUI();
     }
 
-    function renderFormaturBoard() {
+    // Dibangun SEKALI saat sesi dimulai agar gambar tidak dimuat ulang tiap klik
+    function buildFormaturBoard() {
+      const grid = document.getElementById('formatur-candidates-grid');
+      grid.innerHTML = shuffledCandidates.map(cand => {
+        const safeName = cand.nama.replace(/'/g, "\\'");
+        return `
+          <div class="neu-card-sm formatur-card" data-candidate="${cand.nama.replace(/"/g, '&quot;')}"
+               onclick="handleCandidateCardClick(this, '${safeName}')">
+            <div class="neu-inset formatur-num" title="Nomor Urut">${cand.nomorUrut}</div>
+            <div class="neu-inset formatur-check">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="neu-inset formatur-photo">
+              ${cand.foto
+                ? `<img src="${cand.foto}" alt="${cand.nama}" loading="lazy" decoding="async" draggable="false" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
+                : ''}
+              <div style="display:${cand.foto ? 'none' : 'flex'}; flex-direction:column; align-items:center; justify-content:center; color:var(--text-dim); gap:4px;">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              </div>
+            </div>
+            <div class="formatur-name" title="${cand.nama}">${cand.nama}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleCandidateCardClick(cardEl, candidateName) {
+      if (cardEl.classList.contains('locked')) return;
+      toggleCandidateSelection(candidateName);
+    }
+
+    // Hanya memperbarui class CSS (0ms lag, tanpa merusak scroll/gambar)
+    function updateFormaturSelectionUI() {
       const quota = electionData.quota;
       const count = selectedCandidates.length;
       const isFull = count === quota;
@@ -1835,31 +1893,14 @@
         submitBtn.disabled = true;
       }
 
-      const grid = document.getElementById('formatur-candidates-grid');
-      grid.innerHTML = shuffledCandidates.map(cand => {
-        const isSelected = selectedCandidates.includes(cand.nama);
+      const cards = document.querySelectorAll('#formatur-candidates-grid .formatur-card');
+      cards.forEach(card => {
+        const candName = card.getAttribute('data-candidate');
+        const isSelected = selectedCandidates.includes(candName);
         const isLocked = !isSelected && isFull;
-        const safeName = cand.nama.replace(/'/g, "\\'");
-
-        return `
-          <div class="neu-card-sm formatur-card ${isSelected ? 'selected' : ''} ${isLocked ? 'locked' : ''}"
-               onclick="${isLocked ? '' : `toggleCandidateSelection('${safeName}')`}">
-            <div class="neu-inset formatur-num" title="Nomor Urut">${cand.nomorUrut}</div>
-            <div class="neu-inset formatur-check">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div class="neu-inset formatur-photo">
-              ${cand.foto
-                ? `<img src="${cand.foto}" alt="${cand.nama}" draggable="false" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
-                : ''}
-              <div style="display:${cand.foto ? 'none' : 'flex'}; flex-direction:column; align-items:center; justify-content:center; color:var(--text-dim); gap:4px;">
-                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              </div>
-            </div>
-            <div class="formatur-name" title="${cand.nama}">${cand.nama}</div>
-          </div>
-        `;
-      }).join('');
+        card.classList.toggle('selected', isSelected);
+        card.classList.toggle('locked', isLocked);
+      });
     }
 
     function openReviewModal() {
@@ -1937,7 +1978,50 @@
         });
     }
 
-    /* ================= REALTIME CANDLESTICK CHART (RANKED) ================= */
+    /* ================= REALTIME CANDLESTICK CHART + FULLSCREEN & SMOOTH WHEEL ================= */
+    const candleArenaEl = document.getElementById('candle-arena');
+    candleArenaEl.addEventListener('wheel', function(e) {
+      if (e.deltaY !== 0) {
+        e.preventDefault();
+        candleArenaEl.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+
+    function toggleChartFullscreen() {
+      const chartSection = document.getElementById('view-chart');
+      if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+        if (chartSection.requestFullscreen) {
+          chartSection.requestFullscreen();
+        } else if (chartSection.webkitRequestFullscreen) {
+          chartSection.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+      }
+    }
+
+    function updateFullscreenButtonUI() {
+      const isFs = Boolean(document.fullscreenElement || document.webkitFullscreenElement);
+      const label = document.getElementById('fullscreen-label');
+      const icon = document.getElementById('fullscreen-icon');
+      if (!label || !icon) return;
+
+      if (isFs) {
+        label.textContent = 'Keluar Layar Penuh';
+        icon.innerHTML = `<polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/>`;
+      } else {
+        label.textContent = 'Layar Penuh';
+        icon.innerHTML = `<polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>`;
+      }
+    }
+
+    document.addEventListener('fullscreenchange', updateFullscreenButtonUI);
+    document.addEventListener('webkitfullscreenchange', updateFullscreenButtonUI);
+
     function enterChartView() {
       switchView('view-chart');
       fetchRealtimeResults();
@@ -1945,6 +2029,10 @@
     }
 
     function exitChartView() {
+      if (document.fullscreenElement || document.webkitFullscreenElement) {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      }
       stopAutoRefresh();
       switchView('view-landing');
     }
@@ -2022,7 +2110,7 @@
             <div class="candle-candidate">
               <div class="neu-card-sm candle-avatar">
                 ${cand.foto
-                  ? `<img src="${cand.foto}" alt="${cand.nama}" draggable="false" onerror="this.style.display='none';">`
+                  ? `<img src="${cand.foto}" alt="${cand.nama}" loading="lazy" decoding="async" draggable="false" onerror="this.style.display='none';">`
                   : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:6px; color:var(--text-muted);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
               </div>
               <div class="candle-name" title="${cand.nama}">${cand.nama}</div>
